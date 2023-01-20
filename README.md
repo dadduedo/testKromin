@@ -18,25 +18,30 @@ The candidate:
 **1. Easy task**
 
 The user can register and log in.
-The user can get, create, edit, remove and search todos.  
+The user can get, create, edit, remove and search todo lists.  
+A todo list is a named list containing todos.
+
+For instance, the user X can create 2 different todo list:
+- todo list `Xmas presents` holding the todos `Barbie`, `Micromachine` and `Get others from grandma`
+- todo list `Groceries` holding the todos `Bananas`, `Pasta` and `Eggs`
+
 The search must accept the following parameters:
 - `q`: string => the todo content must include `q`
 - `from`: date => the todo must be created after `from`
 - `to`: date => the todo must be created before `to`
+and returns the todo lists matching the given criteria.
 
 **2. Normal task**
 
-All features described in easy task, with the following addition: the todo list must be named.  
-For instance, the user X can create 2 different todo list:
-- todo list "Xmas presents"
-- todo list "Groceries"
+All features described in the easy task, with the following addition: the todo list must be sharable.  
+For instance, the user X can create 2 different todo list: 
+- the private todo list `Xmas presents`: only X can access the todo list and manage it
+- the public todo list `Groceries`: everybody having the correct link can access the todo list and manage it
 
 **3. Hard task**
 
-All features described in medium task, with the following addition: the todo list must be sharable.  
-For instance, the user X can create 2 different todo list: 
-- the private todo list "Xmas presents": only X can access the todo list and manage it
-- the public todo list "Groceries": everybody having the correct link can access the todo list and manage it
+All features described in the medium task, with the following addition: the todo list must update realtime.
+For instance, if the user X and Y are both on the same todo list `Groceries` holding the todo `Bananas`, if X rename the todo to `Apples` then Y see the change reflected in realtime. 
 
 ## Development
 
