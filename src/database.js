@@ -8,6 +8,11 @@ const database = knex({
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
   },
+  useNullAsDefault: true,
+  debug: true,
+  log: {
+    debug: ({ sql, bindings }) => console.log(`[QUERY] ${sql}`, bindings),
+  },
 });
 
 export default database;
