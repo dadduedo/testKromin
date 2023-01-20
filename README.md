@@ -29,7 +29,8 @@ The search must accept the following parameters:
 - `q`: string => the todo content must include `q`
 - `from`: date => the todo must be created after `from`
 - `to`: date => the todo must be created before `to`
-and returns the todo lists matching the given criteria.
+  
+and it must return the todo lists matching the given criteria.
 
 **2. Normal task**
 
