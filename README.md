@@ -6,9 +6,37 @@ It's an express powered API handling 2 resources:
 - users
 - todos
 
-Users can register and login.
-User can then retrieve, create, update and remove todos.
-User can also search for todos matching specific criterias.
+Users will be able to register and log in, then manage its todos.
+
+## Feature requests
+
+The candidate:
+- should complete 1 among the following tasks
+- can use any library of his choice to achieve the task
+- can apply any change he wants to the provided codebase
+
+**1. Easy task**
+
+The user can register and log in.
+The user can get, create, edit, remove and search todos.  
+The search must accept the following parameters:
+- `q`: string => the todo content must include `q`
+- `from`: date => the todo must be created after `from`
+- `to`: date => the todo must be created before `to`
+
+**2. Normal task**
+
+All features described in easy task, with the following addition: the todo list must be named.  
+For instance, the user X can create 2 different todo list:
+- todo list "Xmas presents"
+- todo list "Groceries"
+
+**3. Hard task**
+
+All features described in medium task, with the following addition: the todo list must be sharable.  
+For instance, the user X can create 2 different todo list: 
+- the private todo list "Xmas presents": only X can access the todo list and manage it
+- the public todo list "Groceries": everybody having the correct link can access the todo list and manage it
 
 ## Development
 
@@ -17,8 +45,11 @@ To run the project locally:
 docker compose up
 ```
 
-API served at <http://localhost>.
-Live reload takes up to 20s to happen.
+API served at <http://localhost>.  
+
+Live reload (`nodemon`) takes up to 20s on MacOS + Docker: feel free to either
+1) fix this and keep developing using Docker
+2) find another way to develop out of Docker
 
 # ⚠️ KROMIN ONLY ⚠️
 
@@ -26,12 +57,17 @@ Prima di consegnare lo zip:
 
 1. rimuovere questa sezione dal README
 
-2. modificare la riga che avvia il server con:
+2. modificare la riga in `index.js` che avvia il server con:
 ```js
 app.listen(() => console.log(`Example app listening on port ${port}`), port);
 ```
+
 3. rimuovere `node_modules/` dal `.gitignore`
 
+4. modificare la riga in `src/database.js` con:
+```js
+database: process.env.MYSQL_DATABASEE,
+```
 
 Problemi introdotti:
 - nel .gitignore non c'è node_modules
@@ -43,3 +79,6 @@ Errori introdotti:
 1. errore critico per cui non parte il progetto (errore di setup di progetto) => nell'index la callback e la porta sono invertiti
 2. errore che compare in console immediatamente ma che non fa crashare l’app => MISSING
 3. errore che fa crashare al compiersi di un’azione => è sbagliata la env MYSQL_DATABASEE dentro database.js, finchè non fai query non te ne accorgi
+4. errore che non gestisce la persistenza di un’azione (es. API di update, che però non aggiorna veramente il DB) => MISSING
+5. errore che gestisce un Datetime senza tenere conto del Timezone => MISSING
+6. errore difficile da scovare => MISSING
