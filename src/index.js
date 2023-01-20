@@ -7,13 +7,31 @@ app.use(express.json());
 
 const port = 3000;
 
+/**
+ * ROUTES
+ */
 app.get("/", (req, res) => {
   res.send("API is ready.");
 });
 
+app.get("/todo/:id", async (req, res) => {
+  const data = await TodoController.get(req.params);
+  res.json(data);
+});
+
+app.get("/todo", async (req, res) => {
+  const data = await TodoController.getAll();
+  res.json(data);
+});
+
 app.post("/todo", async (req, res) => {
-  const todo = await TodoController.create(req.body);
-  res.json(todo);
+  const data = await TodoController.create(req.body);
+  res.json(data);
+});
+
+app.post("/todo/search", async (req, res) => {
+  const data = await TodoController.search(req.body);
+  res.json(data);
 });
 
 app.get("*", (req, res) => {

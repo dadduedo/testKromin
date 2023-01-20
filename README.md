@@ -12,6 +12,7 @@ Users will be able to register and log in, then manage its todos.
 
 The candidate:
 - should complete 1 among the following tasks
+- should find possible errors in the codebase provided
 - can use any library of his choice to achieve the task
 - can apply any change he wants to the provided codebase
 
@@ -48,6 +49,35 @@ For instance, if the user X and Y are both on the same todo list `Groceries` hol
 
 This task requires the use of sockets.
 
+**Errors**
+
+Creating the following todos:
+```sh
+curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"ciao papà"}'
+curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"ciao mamma","creation_date":"2022-01-01"}'
+curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"hello mom","creation_date":"2022-12-31T00:00:00"}'
+```
+
+And then search for all todos in year `2022`:
+```sh
+curl -X POST http://localhost:3000/todo/search -H 'Content-type: application/json' -d '{"from":"2022-01-01","to":"2022-12-31"}'
+```
+
+The wrong result is returned:
+```sh
+[
+  {
+    "id": 2,
+    "creation_date": "2022-01-01",
+    "content": "ciao mamma",
+    "position": null,
+    "status": "pending"
+  }
+]
+```
+
+We are expecting to find 2 todos in year `2022`. 
+
 ## Development
 
 To run the project locally:
@@ -82,7 +112,7 @@ database: process.env.MYSQL_DATABASEE,
 Problemi introdotti:
 - nel .gitignore non c'è node_modules
 - la porta nell'index.js è hardcodata invece di usare la variable PORT dell'env
-- id non è autoincrement nelle tabelle
+- id non è autoincrement nella tabella users
 - creation_date non è una date nelle tabelle, quindi comparison tramite operatori ><= non funzionano
 
 Errori introdotti:
@@ -92,3 +122,19 @@ Errori introdotti:
 4. errore che non gestisce la persistenza di un’azione (es. API di update, che però non aggiorna veramente il DB) => MISSING
 5. errore che gestisce un Datetime senza tenere conto del Timezone => MISSING
 6. errore difficile da scovare => MISSING
+
+
+
+Rimuovere => 
+```sh
+curl http://localhost:3000/todo
+curl http://localhost:3000/todo/1
+
+curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"ciao papà"}'
+curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"ciao mamma","creation_date":"2022-01-01"}'
+curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"hello mom","creation_date":"2022-12-31T00:00:00"}'
+
+curl -X POST http://localhost:3000/todo/search -H 'Content-type: application/json' -d '{"q":"ciao","from":"2023-01-01"}'
+curl -X POST http://localhost:3000/todo/search -H 'Content-type: application/json' -d '{"q":"ciao","from":"2023-01-01","to":"2023-12-12"}'
+curl -X POST http://localhost:3000/todo/search -H 'Content-type: application/json' -d '{"q":"ciao","from":"2022-01-01","to":"2022-12-31"}'
+```
