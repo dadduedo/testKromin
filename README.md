@@ -39,10 +39,14 @@ For instance, the user X can create 2 different todo list:
 - the private todo list `Xmas presents`: only X can access the todo list and manage it
 - the public todo list `Groceries`: everybody having the correct link can access the todo list and manage it
 
+When sharing a list, the user X can decide if the shared users can only see the list or also edit the todos in it. 
+
 **3. Hard task**
 
 All features described in the medium task, with the following addition: the todo list must update realtime.
 For instance, if the user X and Y are both on the same todo list `Groceries` holding the todo `Bananas`, if X rename the todo to `Apples` then Y see the change reflected in realtime. 
+
+This task requires the use of sockets.
 
 ## Development
 
