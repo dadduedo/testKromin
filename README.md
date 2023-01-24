@@ -104,29 +104,26 @@ app.listen(() => console.log(`Example app listening on port ${port}`), port);
 
 3. rimuovere `node_modules/` dal `.gitignore`
 
-4. modificare la riga in `src/database.js` con:
-```js
-database: process.env.MYSQL_DATABASEE,
-```
-
-Problemi introdotti:
+Problemi strutturali (non prettamente codice) introdotti:
+- i controller fanno query... xD
 - nel .gitignore non c'è node_modules
 - la porta nell'index.js è hardcodata invece di usare la variable PORT dell'env
-- id non è autoincrement nella tabella users
 - creation_date non è una date nelle tabelle, quindi comparison tramite operatori ><= non funzionano
 
 Errori introdotti:
 1. errore critico per cui non parte il progetto (errore di setup di progetto) => nell'index la callback e la porta sono invertiti
 2. errore che compare in console immediatamente ma che non fa crashare l’app => MISSING
-3. errore che fa crashare al compiersi di un’azione => è sbagliata la env MYSQL_DATABASEE dentro database.js, finchè non fai query non te ne accorgi
+3. errore che fa crashare al compiersi di un’azione => auth/register fallisce senza auto_increment perchè devi mettere id a mano
 4. errore che non gestisce la persistenza di un’azione (es. API di update, che però non aggiorna veramente il DB) => MISSING
 5. errore che gestisce un Datetime senza tenere conto del Timezone => MISSING
 6. errore difficile da scovare => MISSING
 
 
-
 Rimuovere => 
 ```sh
+curl -X POST http://localhost:3000/auth/register -H 'Content-type: application/json' -d '{"email":"john@gmail.com","password":"password"}'
+curl -X POST http://localhost:3000/auth/login -H 'Content-type: application/json' -d '{"email":"john@gmail.com","password":"password"}'
+
 curl http://localhost:3000/todo
 curl http://localhost:3000/todo/1
 

@@ -1,4 +1,5 @@
 import express from "express";
+import * as AuthController from "./controller/Auth.js";
 import * as TodoController from "./controller/Todo.js";
 
 const app = express();
@@ -12,6 +13,16 @@ const port = 3000;
  */
 app.get("/", (req, res) => {
   res.send("API is ready.");
+});
+
+app.post("/auth/register", async (req, res) => {
+  const data = await AuthController.register(req.body);
+  res.json(data);
+});
+
+app.post("/auth/login", async (req, res) => {
+  const data = await AuthController.login(req.body);
+  res.json(data);
 });
 
 app.get("/todo/:id", async (req, res) => {
