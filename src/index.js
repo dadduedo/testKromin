@@ -1,6 +1,7 @@
 import express from "express";
 import * as AuthController from "./controller/Auth.js";
 import * as TodoController from "./controller/Todo.js";
+import auth from "./middlewares/auth.js";
 
 const app = express();
 app.set("json spaces", 2);
@@ -9,7 +10,7 @@ app.use(express.json());
 const port = 3000;
 
 /**
- * ROUTES
+ * Routes
  */
 app.get("/", (req, res) => {
   res.send("API is ready.");
@@ -25,28 +26,28 @@ app.post("/auth/login", async (req, res) => {
   res.json(data);
 });
 
-app.get("/todo/:id", async (req, res) => {
+app.get("/todo/:id", auth, async (req, res) => {
   const data = await TodoController.get(req.params);
   res.json(data);
 });
 
-app.get("/todo", async (req, res) => {
+app.get("/todo", auth, async (req, res) => {
   const data = await TodoController.getAll();
   res.json(data);
 });
 
-app.post("/todo", async (req, res) => {
+app.post("/todo", auth, async (req, res) => {
   const data = await TodoController.create(req.body);
   res.json(data);
 });
 
-app.post("/todo/search", async (req, res) => {
+app.post("/todo/search", auth, async (req, res) => {
   const data = await TodoController.search(req.body);
   res.json(data);
 });
 
 app.get("*", (req, res) => {
-  res.status(404).send("Not found.");
+  res.sendStatus(404);
 });
 
 // app.listen(() => console.log(`Example app listening on port ${port}`), port);

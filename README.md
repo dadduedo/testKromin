@@ -113,7 +113,7 @@ Problemi strutturali (non prettamente codice) introdotti:
 Errori introdotti:
 1. errore critico per cui non parte il progetto (errore di setup di progetto) => nell'index la callback e la porta sono invertiti
 2. errore che compare in console immediatamente ma che non fa crashare l’app => MISSING
-3. errore che fa crashare al compiersi di un’azione => auth/register fallisce senza auto_increment perchè devi mettere id a mano
+3. errore che fa crashare al compiersi di un’azione => auth/register fallisce senza auto_increment perchè devi mettere id a mano, e se non metti unique ti trovi diversi utenti con stessa email ma sembra funzionare tutto
 4. errore che non gestisce la persistenza di un’azione (es. API di update, che però non aggiorna veramente il DB) => MISSING
 5. errore che gestisce un Datetime senza tenere conto del Timezone => MISSING
 6. errore difficile da scovare => MISSING
@@ -124,14 +124,14 @@ Rimuovere =>
 curl -X POST http://localhost:3000/auth/register -H 'Content-type: application/json' -d '{"email":"john@gmail.com","password":"password"}'
 curl -X POST http://localhost:3000/auth/login -H 'Content-type: application/json' -d '{"email":"john@gmail.com","password":"password"}'
 
-curl http://localhost:3000/todo
-curl http://localhost:3000/todo/1
+curl http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE'
+curl http://localhost:3000/todo/1 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE'
 
-curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"ciao papà"}'
-curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"ciao mamma","creation_date":"2022-01-01"}'
-curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"hello mom","creation_date":"2022-12-31T00:00:00"}'
+curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"ciao papà"}'
+curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"ciao mamma","creation_date":"2022-01-01"}'
+curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"hello mom","creation_date":"2022-12-31T00:00:00"}'
 
-curl -X POST http://localhost:3000/todo/search -H 'Content-type: application/json' -d '{"q":"ciao","from":"2023-01-01"}'
-curl -X POST http://localhost:3000/todo/search -H 'Content-type: application/json' -d '{"q":"ciao","from":"2023-01-01","to":"2023-12-12"}'
-curl -X POST http://localhost:3000/todo/search -H 'Content-type: application/json' -d '{"q":"ciao","from":"2022-01-01","to":"2022-12-31"}'
+curl -X POST http://localhost:3000/todo/search -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"q":"ciao","from":"2023-01-01"}'
+curl -X POST http://localhost:3000/todo/search -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"q":"ciao","from":"2023-01-01","to":"2023-12-12"}'
+curl -X POST http://localhost:3000/todo/search -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"q":"ciao","from":"2022-01-01","to":"2022-12-31"}'
 ```
