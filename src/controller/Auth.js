@@ -7,8 +7,10 @@ const sha256 = (text) => crypto.createHash("sha256").update(text).digest("hex");
 /**
  * Register a new user with provided email and password and returns a JWT token.
  */
-export const register = async ({ email, password }) => {
+export const register = async ({ first_name, last_name, email, password }) => {
   await database("users").insert({
+    first_name,
+    last_name,
     email,
     password: sha256(password),
   });

@@ -2,6 +2,7 @@ import express from "express";
 import * as AuthController from "./controller/Auth.js";
 import * as TodoController from "./controller/Todo.js";
 import auth from "./middlewares/auth.js";
+import error from "./middlewares/error.js";
 
 const app = express();
 app.set("json spaces", 2);
@@ -41,6 +42,16 @@ app.post("/todo", auth, async (req, res) => {
   res.json(data);
 });
 
+app.patch("/todo/:id", auth, async (req, res) => {
+  const data = await TodoController.update({ ...req.params, ...req.body });
+  res.json(data);
+});
+
+app.delete("/todo/:id", auth, async (req, res) => {
+  const data = await TodoController.remove(req.params);
+  res.json(data);
+});
+
 app.post("/todo/search", auth, async (req, res) => {
   const data = await TodoController.search(req.body);
   res.json(data);
@@ -49,6 +60,8 @@ app.post("/todo/search", auth, async (req, res) => {
 app.get("*", (req, res) => {
   res.sendStatus(404);
 });
+
+app.use(error);
 
 // app.listen(() => console.log(`Example app listening on port ${port}`), port);
 app.listen(port, () => console.log(`Example app listening on port ${port}`));

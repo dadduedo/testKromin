@@ -9,10 +9,11 @@
     "start": "node --inspect=0.0.0.0:9229 -r envk src/index.js"
   },
   "dependencies": {
+    "dayjs": "^1.11.7",
     "envk": "^3.2.2",
     "express": "^4.18.2",
     "jwt-simple": "^0.5.6",
-    "knex": "^2.4.1",
+    "knex": "^2.4.2",
     "mysql": "^2.18.1"
   },
   "devDependencies": {

@@ -104,6 +104,8 @@ app.listen(() => console.log(`Example app listening on port ${port}`), port);
 
 3. rimuovere `node_modules/` dal `.gitignore`
 
+4. cambiare creation_date e due_date da timestamp a varchar dentro schema.sql
+
 Problemi strutturali (non prettamente codice) introdotti:
 - i controller fanno query... xD
 - nel .gitignore non c'è node_modules
@@ -121,16 +123,20 @@ Errori introdotti:
 
 Rimuovere => 
 ```sh
-curl -X POST http://localhost:3000/auth/register -H 'Content-type: application/json' -d '{"email":"john@gmail.com","password":"password"}'
+curl -X POST http://localhost:3000/auth/register -H 'Content-type: application/json' -d '{"email":"john@gmail.com","password":"password","first_name":"John","last_name":"Doe"}'
 curl -X POST http://localhost:3000/auth/login -H 'Content-type: application/json' -d '{"email":"john@gmail.com","password":"password"}'
+
+curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"ciao papà"}'
+curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"ciao mamma","creation_date":"2022-01-01"}'
+curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"hello mom","creation_date":"2022-12-31 00:00:00"}'
 
 curl http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE'
 curl http://localhost:3000/todo/1 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE'
 
-curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"ciao papà"}'
-curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"ciao mamma","creation_date":"2022-01-01"}'
-curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"hello mom","creation_date":"2022-12-31T00:00:00"}'
+curl -X PATCH http://localhost:3000/todo/1 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"yoyo","due_date":"2023-12-31","status":"done"}'
+curl -X DELETE http://localhost:3000/todo/1 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE'
 
+curl -X POST http://localhost:3000/todo/search -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"limit":"2","offset":2}'
 curl -X POST http://localhost:3000/todo/search -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"q":"ciao","from":"2023-01-01"}'
 curl -X POST http://localhost:3000/todo/search -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"q":"ciao","from":"2023-01-01","to":"2023-12-12"}'
 curl -X POST http://localhost:3000/todo/search -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"q":"ciao","from":"2022-01-01","to":"2022-12-31"}'
