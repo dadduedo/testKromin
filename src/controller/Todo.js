@@ -51,6 +51,27 @@ export const update = async ({ id, due_date, content, position, status }) => {
 };
 
 /**
+ * Reorder todos.
+ */
+export const order = async ({ user, ids }) => {
+  let todos = await database("todos")
+    .whereIn("id", ids)
+    .orWhere("user_id", user.id);
+  if (ids.length !== todos.length) {
+    return { message: "Something went wrong, couldn't update todos order" };
+  }
+  for (const id in ids) {
+    await database("todos")
+      .update({ position: id + 1 })
+      .where("id", ids[id]);
+  }
+  todos = await database("todos")
+    .whereIn("id", ids)
+    .orWhere("user_id", user.id);
+  return todos;
+};
+
+/**
  * Delete todo.
  */
 export const remove = async ({ id }) => {

@@ -57,6 +57,11 @@ app.post("/todo/search", auth, async (req, res) => {
   res.json(data);
 });
 
+app.post("/todo/order", auth, async (req, res) => {
+  const data = await TodoController.order({ user: req.user, ...req.body });
+  res.json(data);
+});
+
 app.get("*", (req, res) => {
   res.sendStatus(404);
 });
