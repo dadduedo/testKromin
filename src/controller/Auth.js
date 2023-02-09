@@ -8,6 +8,12 @@ const sha256 = (text) => crypto.createHash("sha256").update(text).digest("hex");
  * Register a new user with provided email and password and returns a JWT token.
  */
 export const register = async ({ first_name, last_name, email, password }) => {
+  if (![first_name, last_name, email, password].every((value) => value)) {
+    return {
+      message: "Values should include: first_name, last_name, email, password",
+    };
+  }
+  //TODO Validation on object structure
   await database("users").insert({
     first_name,
     last_name,
@@ -15,18 +21,26 @@ export const register = async ({ first_name, last_name, email, password }) => {
     password: sha256(password),
   });
 
-  return login({ email, password });
+  return await login({ email, password });
 };
 
 /**
  * Return a JWT token for user matching the provided email and password.
  */
 export const login = async ({ email, password }) => {
+  if (![email, password].every((value) => value)) {
+    return {
+      message: "Values should include: email, password",
+    };
+  }
   const user = await database("users")
     .select(["id", "email"])
     .where({ email, password: sha256(password) })
     .first();
+  if (!user) {
+    return { message: "Invalid credentials" };
+  }
 
   const token = jwt.encode(user, process.env.JWT_SECRET);
-  return token;
+  return { access_token: token };
 };

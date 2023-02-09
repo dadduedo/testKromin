@@ -12,5 +12,6 @@ create table todos (
   due_date timestamp,
   content text not null,
   position int,
+  user_id bigint,
   status enum ('pending', 'done') default 'pending' not null
 );

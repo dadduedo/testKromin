@@ -14,56 +14,58 @@ const port = 3000;
  * Routes
  */
 app.get("/", (req, res) => {
-  res.send("API is ready.");
+  res.json({ message: "API is ready." });
 });
 
-app.post("/auth/register", async (req, res) => {
-  const data = await AuthController.register(req.body);
+app.post("/api/auth/signup", async (req, res) => {
+  const data = await AuthController.register({ user: req.user, ...req.body });
   res.json(data);
 });
 
-app.post("/auth/login", async (req, res) => {
-  const data = await AuthController.login(req.body);
+app.post("/api/auth/login", async (req, res) => {
+  const data = await AuthController.login({ user: req.user, ...req.body });
   res.json(data);
 });
 
-app.get("/todo/:id", auth, async (req, res) => {
-  const data = await TodoController.get(req.params);
+app.get("/api/todos/:id", auth, async (req, res) => {
+  const data = await TodoController.get({ user: req.user, ...req.params });
   res.json(data);
 });
 
-app.get("/todo", auth, async (req, res) => {
-  const data = await TodoController.getAll();
+app.get("/api/todos", auth, async (req, res) => {
+  console.log(req.query);
+  const data = await TodoController.search({ user: req.user, ...req.query, ...req.body });
   res.json(data);
 });
 
-app.post("/todo", auth, async (req, res) => {
-  const data = await TodoController.create(req.body);
+app.post("/api/todos", auth, async (req, res) => {
+  const data = await TodoController.create({ user: req.user, ...req.body });
+  console.log(data);
   res.json(data);
 });
 
-app.patch("/todo/:id", auth, async (req, res) => {
-  const data = await TodoController.update({ ...req.params, ...req.body });
+app.patch("/api/todos/:id", auth, async (req, res) => {
+  const data = await TodoController.update({ user: req.user, ...req.params, ...req.body });
   res.json(data);
 });
 
-app.delete("/todo/:id", auth, async (req, res) => {
-  const data = await TodoController.remove(req.params);
+app.delete("/api/todos/:id", auth, async (req, res) => {
+  const data = await TodoController.remove({ user: req.user, ...req.params });
   res.json(data);
 });
 
-app.post("/todo/search", auth, async (req, res) => {
-  const data = await TodoController.search(req.body);
+app.post("/api/todos/search", auth, async (req, res) => {
+  const data = await TodoController.search({ user: req.user, ...req.body });
   res.json(data);
 });
 
-app.post("/todo/order", auth, async (req, res) => {
+app.post("/api/todos/order", auth, async (req, res) => {
   const data = await TodoController.order({ user: req.user, ...req.body });
   res.json(data);
 });
 
-app.get("*", (req, res) => {
-  res.sendStatus(404);
+app.all("*", (req, res) => {
+  res.status(404).json({ message: "page not found" });
 });
 
 app.use(error);
