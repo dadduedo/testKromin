@@ -1,14 +1,13 @@
 import database from "../database.js";
 import { toSQL } from "../helpers.js";
+import ApiError from "../errors/ApiError.js";
 
 /**
  * Get todo by ID.
  */
 export const get = async ({ user, id }) => {
   if (!id) {
-    return {
-      message: "Values should include: id",
-    };
+    throw new ApiError(400, "You need to specify an id");
   }
   const todo = await database("todos").where({ id, user_id: user.id }).first();
   return todo;
@@ -20,9 +19,7 @@ export const get = async ({ user, id }) => {
  */
 export const create = async ({ user, due_date, content, position }) => {
   if (!content) {
-    return {
-      message: "This value is required: content",
-    };
+    throw new ApiError(400, "You need to specify the content of the todo");
   }
   const [id] = await database("todos").insert({
     creation_date: toSQL(),
@@ -41,15 +38,13 @@ export const create = async ({ user, due_date, content, position }) => {
  */
 export const update = async ({ id, due_date, content, position, status }) => {
   if (!id) {
-    return {
-      message: "You need to specify which item to update",
-    };
+    throw new ApiError(400, "You need to specify an id");
   }
-  if ([due_date, content, position, status].every((value) => value)) {
-    return {
-      message:
-        "Values should at least include one of: due_date, content, position, status",
-    };
+  if ([due_date, content, position, status].every((value) => !value)) {
+    throw new ApiError(
+      400,
+      "Values should at least include one of: due_date, content, position, status"
+    );
   }
   await database("todos")
     .update({
@@ -69,9 +64,7 @@ export const update = async ({ id, due_date, content, position, status }) => {
  */
 export const order = async ({ user, ids }) => {
   if (!ids) {
-    return {
-      message: "You need to specify which items to update",
-    };
+    throw new ApiError(400, "You need to specify which items to update");
   }
   let todos = await database("todos")
     .whereIn("id", ids)

@@ -1,6 +1,7 @@
 import database from "../database.js";
 import jwt from "jwt-simple";
 import crypto from "crypto";
+import ApiError from "../errors/ApiError.js";
 
 const sha256 = (text) => crypto.createHash("sha256").update(text).digest("hex");
 
@@ -9,9 +10,10 @@ const sha256 = (text) => crypto.createHash("sha256").update(text).digest("hex");
  */
 export const register = async ({ first_name, last_name, email, password }) => {
   if (![first_name, last_name, email, password].every((value) => value)) {
-    return {
-      message: "Values should include: first_name, last_name, email, password",
-    };
+    throw new ApiError(
+      400,
+      "Values should include: first_name, last_name, email, password"
+    );
   }
   //TODO Validation on object structure
   await database("users").insert({
@@ -38,7 +40,7 @@ export const login = async ({ email, password }) => {
     .where({ email, password: sha256(password) })
     .first();
   if (!user) {
-    return { message: "Invalid credentials" };
+    throw new ApiError(401, "Invalid credentials");
   }
 
   const token = jwt.encode(user, process.env.JWT_SECRET);
