@@ -9,7 +9,7 @@ const auth = (req, res, next) => {
     req.user = jwt.decode(token, process.env.JWT_SECRET);
     return next();
   } catch {
-    return res.status(403).json({ message: "Forbidden" });
+    throw new ApiError(403, "Forbidden");
   }
 };
 
