@@ -114,11 +114,11 @@ Problemi strutturali (non prettamente codice) introdotti:
 
 Errori introdotti:
 1. errore critico per cui non parte il progetto (errore di setup di progetto) => nell'index la callback e la porta sono invertiti
-2. errore che compare in console immediatamente ma che non fa crashare l’app => MISSING
-3. errore che fa crashare al compiersi di un’azione => auth/register fallisce senza auto_increment perchè devi mettere id a mano, e se non metti unique ti trovi diversi utenti con stessa email ma sembra funzionare tutto
-4. errore che non gestisce la persistenza di un’azione (es. API di update, che però non aggiorna veramente il DB) => MISSING
-5. errore che gestisce un Datetime senza tenere conto del Timezone => MISSING
-6. errore difficile da scovare => MISSING
+2. errore che compare in console immediatamente ma che non fa crashare l’app => Gli errori sono inviati come stringa e il send(status) non numerico è deprecato 
+3. errore che fa crashare al compiersi di un’azione => Chiamata di update fa crashare tutto (manca user)
+4. errore che non gestisce la persistenza di un’azione (es. API di update, che però non aggiorna veramente il DB) => Manca l'await sulla order
+5. errore che gestisce un Datetime senza tenere conto del Timezone => La query delle date nella ricerca taglia la stringa invece di usare toSQL.
+6. errore difficile da scovare => Manca l'asyncHandler sulla rotta di signup che fa esplodere il server in caso di errore
 
 
 Rimuovere => 
