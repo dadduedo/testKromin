@@ -9,7 +9,7 @@ const sha256 = (text) => crypto.createHash("sha256").update(text).digest("hex");
  * Register a new user with provided email and password and returns a JWT token.
  */
 export const register = async ({ first_name, last_name, email, password }) => {
-  if (![first_name, last_name, email, password].every((value) => value)) {
+  if (![email, password].every((value) => value)) {
     throw new ApiError(
       400,
       "Values should include: first_name, last_name, email, password"

@@ -9,7 +9,7 @@ const app = express();
 app.set("json spaces", 2);
 app.use(express.json());
 
-const port = 3000;
+const port = process.env.PORT;
 
 /**
  * Routes
@@ -18,13 +18,10 @@ app.get("/", (req, res) => {
   res.json({ message: "API is ready." });
 });
 
-app.post(
-  "/api/auth/signup",
-  asyncHandler(async (req, res) => {
-    const data = await AuthController.register({ user: req.user, ...req.body });
-    res.json(data);
-  })
-);
+app.post("/api/auth/signup", async (req, res) => {
+  const data = await AuthController.register({ user: req.user, ...req.body });
+  res.json(data);
+});
 
 app.post(
   "/api/auth/login",
@@ -109,7 +106,6 @@ app.all("*", (req, res) => {
   res.status(404).json({ message: "page not found" });
 });
 
-// app.listen(() => console.log(`Example app listening on port ${port}`), port);
-app.listen(port, () => console.log(`Example app listening on port ${port}`));
+app.listen(() => console.log(`Example app listening on port ${port}`), port);
 
 app.use(error);

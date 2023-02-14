@@ -79,7 +79,7 @@ export const order = async ({ user, ids }) => {
     );
   }
   for (const id in ids) {
-    await database("todos")
+    database("todos")
       .update({ position: Number.parseInt(id) + 1 })
       .where("id", ids[id]);
   }
@@ -110,13 +110,14 @@ export const search = async ({
   offset,
 }) => {
   const query = database("todos");
+  console.log(due_to);
 
   if (q) query.where("content", "like", `%${q}%`);
   if (status) query.where("status", status);
-  if (from) query.where("creation_date", ">=", from);
-  if (to) query.where("creation_date", "<=", to);
-  if (due_from) query.where("due_date", ">=", from);
-  if (due_to) query.where("due_date", "<=", to);
+  if (from) query.where("creation_date", ">=", from.substring(0, 19));
+  if (to) query.where("creation_date", "<=", to.substring(0, 19));
+  if (due_from) query.where("due_date", ">=", due_from.substring(0, 19));
+  if (due_to) query.where("due_date", "<=", due_to.substring(0, 19));
   if (limit) query.limit(limit);
   if (offset) query.offset(offset);
 
