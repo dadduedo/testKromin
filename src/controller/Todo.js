@@ -10,6 +10,9 @@ export const get = async ({ user, id }) => {
     throw new ApiError(400, "You need to specify an id");
   }
   const todo = await database("todos").where({ id, user_id: user.id }).first();
+  if (!todo) {
+    throw new ApiError(404, "Todo not found");
+  }
   return todo;
 };
 
@@ -68,18 +71,19 @@ export const order = async ({ user, ids }) => {
   }
   let todos = await database("todos")
     .whereIn("id", ids)
-    .orWhere("user_id", user.id);
+    .where("user_id", user.id);
   if (ids.length !== todos.length) {
-    return { message: "Something went wrong, couldn't update todos order" };
+    throw new ApiError(
+      400,
+      "Something went wrong, couldn't update todos order"
+    );
   }
   for (const id in ids) {
     await database("todos")
       .update({ position: Number.parseInt(id) + 1 })
       .where("id", ids[id]);
   }
-  todos = await database("todos")
-    .whereIn("id", ids)
-    .orWhere("user_id", user.id);
+  todos = await database("todos").whereIn("id", ids).where("user_id", user.id);
   return todos;
 };
 
@@ -95,6 +99,7 @@ export const remove = async ({ id }) => {
  * Search for todos respecting given filters.
  */
 export const search = async ({
+  user,
   q,
   status,
   from,
@@ -115,7 +120,7 @@ export const search = async ({
   if (limit) query.limit(limit);
   if (offset) query.offset(offset);
 
-  query.orderBy("position");
+  query.where("user_id", user.id).orderBy("position");
 
   const todos = await query;
   return todos;
