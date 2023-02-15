@@ -18,17 +18,16 @@ export const get = async ({ user, id }) => {
 
 /**
  * Create a new todo.
- * If creation_date is not provided, then current date should be the value.
+ * If created_at is not provided, then current date should be the value.
  */
 export const create = async ({ user, due_date, content, position }) => {
   if (!content) {
     throw new ApiError(400, "You need to specify the content of the todo");
   }
   const [id] = await database("todos").insert({
-    creation_date: toSQL(),
+    created_at: toSQL(),
     due_date: toSQL(due_date),
     content,
-    position,
     user_id: user.id,
   });
 
@@ -43,17 +42,16 @@ export const update = async ({ id, due_date, content, position, status }) => {
   if (!id) {
     throw new ApiError(400, "You need to specify an id");
   }
-  if ([due_date, content, position, status].every((value) => !value)) {
+  if ([due_date, content, status].every((value) => !value)) {
     throw new ApiError(
       400,
-      "Values should at least include one of: due_date, content, position, status"
+      "Values should at least include one of: due_date, content, status"
     );
   }
   await database("todos")
     .update({
       due_date: due_date ? toSQL(due_date) : undefined,
       content,
-      position,
       status,
     })
     .where({ id, user_id: user.id });
@@ -114,8 +112,8 @@ export const search = async ({
 
   if (q) query.where("content", "like", `%${q}%`);
   if (status) query.where("status", status);
-  if (from) query.where("creation_date", ">=", from.substring(0, 19));
-  if (to) query.where("creation_date", "<=", to.substring(0, 19));
+  if (from) query.where("created_at", ">=", from.substring(0, 19));
+  if (to) query.where("created_at", "<=", to.substring(0, 19));
   if (due_from) query.where("due_date", ">=", due_from.substring(0, 19));
   if (due_to) query.where("due_date", "<=", due_to.substring(0, 19));
   if (limit) query.limit(limit);

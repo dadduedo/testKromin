@@ -54,8 +54,8 @@ This task requires the use of sockets.
 Creating the following todos:
 ```sh
 curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"ciao papà"}'
-curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"ciao mamma","creation_date":"2022-01-01"}'
-curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"hello mom","creation_date":"2022-12-31T00:00:00"}'
+curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"ciao mamma","created_at":"2022-01-01"}'
+curl -X POST http://localhost:3000/todo -H 'Content-type: application/json' -d '{"content":"hello mom","created_at":"2022-12-31T00:00:00"}'
 ```
 
 And then search for all todos in year `2022`:
@@ -68,7 +68,7 @@ The wrong result is returned:
 [
   {
     "id": 2,
-    "creation_date": "2022-01-01",
+    "created_at": "2022-01-01",
     "content": "ciao mamma",
     "position": null,
     "status": "pending"
@@ -104,13 +104,13 @@ app.listen(() => console.log(`Example app listening on port ${port}`), port);
 
 3. rimuovere `node_modules/` dal `.gitignore`
 
-4. cambiare creation_date e due_date da timestamp a varchar dentro schema.sql
+4. cambiare created_at e due_date da timestamp a varchar dentro schema.sql
 
 Problemi strutturali (non prettamente codice) introdotti:
 - i controller fanno query... xD
 - nel .gitignore non c'è node_modules
 - la porta nell'index.js è hardcodata invece di usare la variable PORT dell'env
-- creation_date non è una date nelle tabelle, quindi comparison tramite operatori ><= non funzionano
+- created_at non è una date nelle tabelle, quindi comparison tramite operatori ><= non funzionano
 
 Errori introdotti:
 1. errore critico per cui non parte il progetto (errore di setup di progetto) => nell'index la callback e la porta sono invertiti
@@ -127,8 +127,8 @@ curl -X POST http://localhost:3000/auth/register -H 'Content-type: application/j
 curl -X POST http://localhost:3000/auth/login -H 'Content-type: application/json' -d '{"email":"john@gmail.com","password":"password"}'
 
 curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"ciao papà"}'
-curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"ciao mamma","creation_date":"2022-01-01"}'
-curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"hello mom","creation_date":"2022-12-31 00:00:00"}'
+curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"ciao mamma","created_at":"2022-01-01"}'
+curl -X POST http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE' -H 'Content-type: application/json' -d '{"content":"hello mom","created_at":"2022-12-31 00:00:00"}'
 
 curl http://localhost:3000/todo -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE'
 curl http://localhost:3000/todo/1 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSJ9.yDrGoBzVPIN_JVlqNF9lmPPRSXE-vp0jv4ybW5tEXsE'
