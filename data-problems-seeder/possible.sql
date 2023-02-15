@@ -5,7 +5,7 @@ ALTER TABLE todos
 
 INSERT INTO `users` (`id`,`email`, `password`, `created_at`, `updated_at`)
 VALUES
-    (1001,'jonathan.doe@example.net','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi','2023-01-31 16:31:08','2023-01-31 16:31:08');
+    (1001,'jonathan.doe@example.net','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8','2023-01-31 16:31:08','2023-01-31 16:31:08');
 
 	
 INSERT INTO `todos` (`id`, `content`, `position`, `user_id`, `status`, `start_time`, `end_time`, `completed_at`, `created_at`, `updated_at`)
