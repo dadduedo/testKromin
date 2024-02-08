@@ -30,3 +30,6 @@ Vedi informazioni relative ai container
 
 Entra nel docker per eseguire operazioni direttamente nel container tramite bash
 `docker exec -it <id-container> bash`
+=======
+# testKromin
+>>>>>>> 0a37d23fede530ad661f5470fa281471ecea4eb2
