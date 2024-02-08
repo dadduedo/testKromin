@@ -1,6 +1,8 @@
 ALTER TABLE todos
 ADD COLUMN `blocker_id` bigint unsigned DEFAULT NULL after status;
 
+ALTER TABLE todos
+ADD COLUMN tipo varchar(255) NOT NULL DEFAULT 'generico';
 INSERT INTO `users` (`id`,`email`, `password`, `created_at`, `updated_at`)
 VALUES
     (1001,'jonathan.doe@example.net','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8','2023-01-31 16:31:08','2023-01-31 16:31:08');

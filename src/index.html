@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO Example</title>
+</head>
+<body>
+  <h1>Socket.IO Example</h1>
+  <input type="text" id="messageInput" placeholder="Inserisci un messaggio">
+  <button onclick="sendMessage()">Invia</button>
+
+  <ul id="messages"></ul>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    socket.on("connected", function (userId) {
+      socket.userId = userId;
+      console.log("socket.userId front end")
+      console.log(socket.userId)
+    });
+    // Evento signup
+    socket.on('signup', (message) => {
+      console.log('Evento signup:', message);
+      // Aggiungi qui le azioni da eseguire quando arriva l'evento 'signup'
+    });
+
+    // Evento login
+    socket.on('login', (message) => {
+      console.log('Evento login:', message);
+      // Aggiungi qui le azioni da eseguire quando arriva l'evento 'login'
+    });
+
+    // Evento taskInserito
+    socket.on('taskInserito', (message) => {
+      console.log('Evento taskInserito:', message);
+      // Aggiungi qui le azioni da eseguire quando arriva l'evento 'taskInserito'
+    });
+
+    // Evento taskCorretto
+    socket.on('taskCorretto', (message) => {
+      console.log('Evento taskCorretto:', message);
+      // Aggiungi qui le azioni da eseguire quando arriva l'evento 'taskCorretto'
+    });
+
+    // Evento updateUtente
+    socket.on('updateUtente', (message) => {
+      console.log('Evento updateUtente:', message);
+      // Aggiungi qui le azioni da eseguire quando arriva l'evento 'updateUtente'
+    });
+
+    // Evento TaskCancellato
+    socket.on('TaskCancellato', (message) => {
+      console.log('Evento TaskCancellato:', message);
+      // Aggiungi qui le azioni da eseguire quando arriva l'evento 'TaskCancellato'
+    });
+
+    // Evento TaskOrdinati
+    socket.on('TaskOrdinati', (message) => {
+      console.log('Evento TaskOrdinati:', message);
+      // Aggiungi qui le azioni da eseguire quando arriva l'evento 'TaskOrdinati'
+    });
+
+    // Evento TaskAssegnati
+    socket.on('taskAssigned', (message) => {
+      console.log('Evento taskAssigned:', message);
+    });
+    function sendMessage() {
+      const messageInput = document.getElementById('messageInput');
+      const message = messageInput.value;
+      // Invia il messaggio al server tramite socket
+      socket.emit('connected', message);
+
+      // Pulisci l'input dopo l'invio
+      messageInput.value = '';
+    }
+  </script>
+</body>
+</html>
